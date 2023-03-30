@@ -19,4 +19,9 @@ export class AppController {
   getVcomParcelas() {
     return this.appService.getVcomParcelas();
   }
+
+  @Get('vcom/boletos')
+  getVcomBoletos() {
+    return this.appService.getVcomBoletos();
+  }
 }

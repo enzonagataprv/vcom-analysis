@@ -155,7 +155,7 @@ export class VcomReposistory {
       Seq_Bol bigint, 
       Cod_Tit bigint,
       DataVencimento date, 
-      ValorVencimento date,
+      ValorVencimento float,
       DataDocumento date,
       DATA_UP date,
       COD_IMP int,
