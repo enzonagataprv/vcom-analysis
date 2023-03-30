@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { VcomReposistory } from './vcom.repository';
+import { VcomReposistory } from '../vcom.repository';
 
 @Injectable()
-export class AppService {
+export class VcomService {
   constructor(private readonly vcomRepository: VcomReposistory) {}
 
   getVcomVDevedores() {
