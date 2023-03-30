@@ -20,4 +20,12 @@ export class AppService {
   getVcomBoletos() {
     this.vcomRepository.insertBoletos();
   }
+
+  getVcomRecebimentoParcelas() {
+    this.vcomRepository.insertRecebimentoParcelas();
+  }
+
+  getVcomRecebimentos() {
+    this.vcomRepository.insertRecebimentos();
+  }
 }

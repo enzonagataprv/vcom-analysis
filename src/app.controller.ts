@@ -24,4 +24,14 @@ export class AppController {
   getVcomBoletos() {
     return this.appService.getVcomBoletos();
   }
+
+  @Get('vcom/recebimento_parcelas')
+  getVcomRecebimentoParcelas() {
+    return this.appService.getVcomRecebimentoParcelas();
+  }
+
+  @Get('vcom/recebimentos')
+  getVcomRecebimentos() {
+    return this.appService.getVcomRecebimentos();
+  }
 }

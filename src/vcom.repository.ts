@@ -201,6 +201,101 @@ export class VcomReposistory {
     }
   }
 
+  async insertRecebimentoParcelas() {
+    console.log('Inserindo recebimento de parcelas');
+    const createTableLocalHost = `
+    CREATE TABLE IF NOT EXISTS VCOM_RECEBIMENTOS_PARCELAS(
+      COD_REC int, 
+      COD_PARC int, 
+      VR_PAGO float, 
+      DATA_UP date,
+      PRIMARY KEY (COD_REC)
+    )
+    `;
+    await this.localhost.query(createTableLocalHost);
+    console.log('Verificando a quantidade de páginas');
+    const queryCount = `SELECT COUNT(COD_REC) as total FROM VCOM_RECEBIMENTOS_PARCELAS`;
+    const resQueryCount = await this.vcomDataSource.query(queryCount);
+    const totalRows = resQueryCount[0].total;
+    console.log(`Total de Registros ${totalRows}`);
+    const pages = this.calcPages(totalRows);
+    console.log(`Total de paginas ${pages}`);
+    for (let page = 0; page <= pages; page++) {
+      console.log(`Iniciando a página ${page}`);
+      const query = `select COD_REC, COD_PARC, VR_PAGO, DATA_UP from RECEBIMENTOS_PARCELAS rp ORDER BY COD_REC OFFSET ${
+        this.maxRowsPerPage * page
+      } ROWS FETCH NEXT ${this.maxRowsPerPage} ROWS ONLY;`;
+
+      const res = await this.vcomDataSource.query(query);
+      for (const item of res) {
+        await this.localhost.query(
+          `INSERT INTO vcom_recebimentos_parcelas
+          (cod_rec, cod_parc, vr_pago, data_up)
+          VALUES($1, $2, $3, $4);
+        `,
+          [item.COD_REC, item.COD_PARC, item.VR_PAGO, item.DATA_UP],
+        );
+        console.log('Inserido');
+      }
+      console.log(`Página ${page} inserida`);
+    }
+  }
+
+  async insertRecebimentos() {
+    console.log('Inserindo recebimentos');
+    const createTableLocalHost = `
+    CREATE TABLE IF NOT EXISTS VCOM_RECEBIMENTOS(
+      COD_REC int,
+      COD_TIT int, 
+      VALOR_RECEBIDO_REC float,
+      DT_PGTO_REC date, 
+      DATA_CAD date, 
+      DATA_UP date,
+      DT_BAIXA_REC date,
+      COD_BEM int,
+      COD_IMP int, 
+      PRIMARY KEY (COD_REC)
+    )
+    `;
+    await this.localhost.query(createTableLocalHost);
+    console.log('Verificando a quantidade de páginas');
+    const queryCount = `SELECT COUNT(COD_REC) as total FROM RECEBIMENTOS`;
+    const resQueryCount = await this.vcomDataSource.query(queryCount);
+    const totalRows = resQueryCount[0].total;
+    console.log(`Total de Registros ${totalRows}`);
+    const pages = this.calcPages(totalRows);
+    console.log(`Total de paginas ${pages}`);
+    for (let page = 0; page <= pages; page++) {
+      console.log(`Iniciando a página ${page}`);
+      const query = `select COD_REC, COD_TIT, VALOR_RECEBIDO_REC,DT_PGTO_REC, DATA_CAD, DATA_UP,DT_BAIXA_REC, COD_BEM, COD_IMP from RECEBIMENTOS r order by COD_REC OFFSET ${
+        this.maxRowsPerPage * page
+      } ROWS FETCH NEXT ${this.maxRowsPerPage} ROWS ONLY;`;
+
+      const res = await this.vcomDataSource.query(query);
+      for (const item of res) {
+        await this.localhost.query(
+          `INSERT INTO vcom_recebimentos
+          (cod_rec, cod_tit, valor_recebido_rec, dt_pgto_rec, data_cad, data_up, dt_baixa_rec, cod_bem, cod_imp)
+          VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9);
+        `,
+          [
+            item.COD_REC,
+            item.COD_TIT,
+            item.VALOR_RECEBIDO_REC,
+            item.DT_PGTO_REC,
+            item.DATA_CAD,
+            item.DATA_UP,
+            item.DT_BAIXA_REC,
+            item.COD_BEM,
+            item.COD_IMP,
+          ],
+        );
+        console.log('Inserido');
+      }
+      console.log(`Página ${page} inserida`);
+    }
+  }
+
   calcPages(totalRows) {
     let pages;
     const totalPages = Math.round(totalRows / this.maxRowsPerPage);
