@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VcomService } from './services/vcom.service';
-import { VcomReposistory } from './vcom.repository';
+import { VcomReposistory } from './repositories/vcom.repository';
 import { ConfigModule } from '@nestjs/config';
 import { VcomController } from './controllers/vcom.controller';
 

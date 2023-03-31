@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { VcomReposistory } from '../vcom.repository';
+import { VcomReposistory } from '../repositories/vcom.repository';
 
 @Injectable()
 export class VcomService {
