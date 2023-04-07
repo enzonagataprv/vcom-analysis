@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { VcomService } from './services/vcom.service';
-import { VcomReposistory } from './repositories/vcom.repository';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PravalerController } from './controllers/pravaler.controller';
 import { VcomController } from './controllers/vcom.controller';
+import { PravalerRepository } from './repositories/pravaler.respository';
+import { VcomReposistory } from './repositories/vcom.repository';
+import { PravalerService } from './services/pravaler.service';
+import { VcomService } from './services/vcom.service';
 
 @Module({
   imports: [
@@ -40,7 +43,12 @@ import { VcomController } from './controllers/vcom.controller';
       synchronize: true,
     }),
   ],
-  controllers: [VcomController],
-  providers: [VcomService, VcomReposistory],
+  controllers: [VcomController, PravalerController],
+  providers: [
+    VcomService,
+    VcomReposistory,
+    PravalerService,
+    PravalerRepository,
+  ],
 })
 export class AppModule {}
